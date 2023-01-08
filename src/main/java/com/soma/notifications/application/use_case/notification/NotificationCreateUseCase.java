@@ -6,7 +6,6 @@ import com.soma.notifications.domain.model.Order;
 import com.soma.notifications.domain.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 @Service
 public class NotificationCreateUseCase {
@@ -23,9 +22,9 @@ public class NotificationCreateUseCase {
         this.notificationBuilder = notificationBuilder;
     }
 
-    public Mono<Notification> create(Order order) {
+    public void create(Order order) {
         Notification notification = notificationBuilder.build(order);
 
-        return notificationRepository.save(notification);
+        notificationRepository.save(notification);
     }
 }

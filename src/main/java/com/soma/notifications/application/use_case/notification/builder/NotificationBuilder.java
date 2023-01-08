@@ -28,8 +28,18 @@ public class NotificationBuilder {
 //        notificationRest.getUserInformation(order.getUserId()).subscribe(notification::setUser);
         notification.setProduct(notificationRest.getProductInformation(order.getProductId()).block());
 //        notificationRest.getProductInformation(order.getProductId()).subscribe(notification::setProduct);
+        notification.setMessage(getMessage(notification));
 
         return notification;
+    }
+
+    private String getMessage(Notification notification) {
+        return String.format(
+                "Created new order for user %s with id $v. Ordered product %s.",
+                notification.getUser().getName(),
+                notification.getUser().getId(),
+                notification.getProduct().getTitle()
+        );
     }
 }
 

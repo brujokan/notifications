@@ -29,7 +29,7 @@ public class OrderCreateConsumer {
         this.orderMapper = orderMapper;
     }
 
-    @KafkaListener(topics = "${kafka.topic.create.order}", groupId = "1")
+    @KafkaListener(topics = "${kafka.topic.create.order}", groupId = "2")
     public void consume(String message) {
         try {
             OrderMessage orderMessage = objectMapper.readValue(message, OrderMessage.class);
