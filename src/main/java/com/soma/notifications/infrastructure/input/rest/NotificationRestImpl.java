@@ -8,6 +8,7 @@ import com.soma.notifications.infrastructure.input.rest.model.ProductRest;
 import com.soma.notifications.infrastructure.input.rest.model.UserRest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -16,6 +17,11 @@ import reactor.core.publisher.Mono;
 @Component
 @Slf4j
 public class NotificationRestImpl implements NotificationRest {
+
+    @Value("$(webclient.users.url)")
+    private String usersURL;
+    @Value("$(webclient.products.url)")
+    private String productsURL;
 
     private static final String USER_URL = "user/";
     private static final String PRODUCT_URL = "product/";
@@ -35,7 +41,7 @@ public class NotificationRestImpl implements NotificationRest {
     public Mono<User> getUserInformation(Long idUser) {
        return WebClient.create()
                 .get()
-                .uri("http://localhost:8080/users/" + USER_URL + idUser)
+                .uri(usersURL + USER_URL + idUser)
                 .retrieve()
                 .bodyToMono(UserRest.class)
                 .flatMap(u -> {
@@ -47,7 +53,7 @@ public class NotificationRestImpl implements NotificationRest {
     public Mono<Product> getProductInformation(String idProduct) {
         return WebClient.create()
                 .get()
-                .uri("http://localhost:8082/products/" + PRODUCT_URL + idProduct)
+                .uri(productsURL + PRODUCT_URL + idProduct)
                 .retrieve()
                 .bodyToMono(ProductRest.class)
                 .flatMap(p -> {
